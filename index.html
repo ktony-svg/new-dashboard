@@ -36,6 +36,8 @@ body {
 #options {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 #options button {
@@ -72,7 +74,7 @@ body {
 
 <div id="container">
     <h2 id="exercise-text">Exercise</h2>
-    <p>Drag and drop the correct CSS math function to calculate the width of a div.</p>
+    <p>Select the correct CSS math function used in the snippet below:</p>
 
     <div id="code-snippet">
         <pre>
@@ -83,9 +85,9 @@ body {
     </div>
 
     <div id="options">
+        <button id="calc">calc</button>
         <button id="max">max</button>
         <button id="min">min</button>
-        <button id="average">average</button>
     </div>
 
     <button id="submit-button">Submit Answer</button>
@@ -98,28 +100,22 @@ let selected = null;
 const buttons = document.querySelectorAll("#options button");
 const feedback = document.getElementById("feedback");
 
-// Add event listener to each button
-buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-        // Remove 'selected' class from all
-        buttons.forEach(b => b.classList.remove("selected"));
-        // Add 'selected' class to clicked one
-        btn.classList.add("selected");
-        selected = btn.id;
-        feedback.textContent = ""; // Clear feedback when selecting again
+// Allow one selection at a time
+buttons.forEach(button => {
+    button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("selected"));
+        button.classList.add("selected");
+        selected = button.id;
+        feedback.textContent = "";
     });
 });
 
-// Submit logic
 document.getElementById("submit-button").addEventListener("click", () => {
     if (!selected) {
         feedback.textContent = "Please select an answer!";
         feedback.style.color = "orange";
-        return;
-    }
-
-    if (selected === "calc") {
-        feedback.textContent = "Correct!";
+    } else if (selected === "calc") {
+        feedback.textContent = "Correct! 🎉";
         feedback.style.color = "lightgreen";
     } else {
         feedback.textContent = "Incorrect. The correct answer is 'calc'.";
